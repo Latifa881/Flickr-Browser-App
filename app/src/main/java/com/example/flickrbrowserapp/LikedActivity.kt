@@ -4,22 +4,27 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flickrbrowserapp.Database.PhotosDatabase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class LikedActivity : AppCompatActivity() {
-    lateinit var rvMain: RecyclerView
+    lateinit var rvLiked: RecyclerView
+    lateinit var likedConstraintLayout:ConstraintLayout
+    lateinit var ivLikedImage:ImageView
     val detailsArray = ArrayList<photoDetails>()
     val favoritesPhotosDB by lazy { PhotosDatabase.getInstance(this).favoritesPhotosDao() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_liked)
         bottomNavigationView()
-        rvMain = findViewById(R.id.rvMain)
-        rvMain.adapter = RecyclerViewAdapter(detailsArray, findViewById(R.id.ivImage), rvMain, findViewById(R.id.constraintLayout),this)
-        rvMain.layoutManager = LinearLayoutManager(this)
+        ivLikedImage=findViewById(R.id.ivLikedImage)
+        likedConstraintLayout=findViewById(R.id.likedConstraintLayout)
+        rvLiked = findViewById(R.id.rvLiked)
+        rvLiked.adapter = RecyclerViewAdapter(detailsArray, ivLikedImage, rvLiked, likedConstraintLayout,this)
+        rvLiked.layoutManager = LinearLayoutManager(this)
         readFromDB()
 
     }
@@ -40,7 +45,7 @@ class LikedActivity : AppCompatActivity() {
         for(photo in favPhotos)
         {
             detailsArray.add(photoDetails(photo.Url,photo.title))
-            rvMain.adapter!!.notifyDataSetChanged()
+            rvLiked.adapter!!.notifyDataSetChanged()
         }
     }
 }

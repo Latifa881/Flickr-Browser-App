@@ -36,11 +36,13 @@ class RecyclerViewAdapter  (val details:ArrayList<photoDetails>, val image:Image
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val data=details[position]
         holder.itemView.apply {
-//            if (activity is LikedActivity){
-//                if(getItemCount()==0)
-//                    lottieNoData.visibility=View.VISIBLE
-//                else{ lottieNoData.visibility=View.GONE}
-//            }
+            if (activity is LikedActivity){
+             val llNoSavedData=  activity.findViewById<LinearLayout>(R.id.llNoSavedData)
+                if(getItemCount()==0)
+                {
+                    llNoSavedData.visibility=View.VISIBLE}
+                else{ llNoSavedData.visibility=View.GONE}
+            }
             var photoId=0
             var photoTitle=""
             var photoUrl=""
@@ -60,9 +62,9 @@ class RecyclerViewAdapter  (val details:ArrayList<photoDetails>, val image:Image
                 { favoritesPhotosDB.deleteFavPhoto(favoritesPhotos(photoId,photoTitle,photoUrl))
                     if (activity is LikedActivity)
                     { activity.readFromDB()
-//                        if(getItemCount()==0)
-//                            lottieNoData.visibility=View.VISIBLE
-//                        else{ lottieNoData.visibility=View.GONE}
+                        if(getItemCount()==0)
+                            llNoSavedData.visibility=View.VISIBLE
+                        else{ llNoSavedData.visibility=View.GONE}
                                        }
                 }
                 ivFavorite.visibility=View.GONE

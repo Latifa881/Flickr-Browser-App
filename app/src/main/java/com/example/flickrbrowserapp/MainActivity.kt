@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var etSearch: EditText
     lateinit var btSearch: ImageView
     lateinit var pbProgress: ProgressBar
+    lateinit var mainConstraintLayout:ConstraintLayout
+    lateinit var ivMainImage:ImageView
     val detailsArray = ArrayList<photoDetails>()
     val API_KEY = "fb68d28f6932960f3e6316e21de3495c"
     var tags = "cookies"
@@ -40,8 +43,10 @@ class MainActivity : AppCompatActivity() {
         etSearch = findViewById(R.id.etSearch)
         btSearch = findViewById(R.id.ivSearch)
         pbProgress = findViewById(R.id.pbProgress)
+        ivMainImage=findViewById(R.id.ivMainImage)
+        mainConstraintLayout= findViewById(R.id.mainConstraintLayout)
         bottomNavigationView()
-        rvMain.adapter = RecyclerViewAdapter(detailsArray, findViewById(R.id.ivImage), rvMain, findViewById(R.id.constraintLayout),this)
+        rvMain.adapter = RecyclerViewAdapter(detailsArray, ivMainImage, rvMain,mainConstraintLayout,this)
         rvMain.layoutManager = LinearLayoutManager(this)
         requestApi_withRetrofit()
         btSearch.setOnClickListener {

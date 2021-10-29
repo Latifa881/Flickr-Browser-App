@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/mainConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -61,9 +61,8 @@
             android:id="@+id/rvMain"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="@+id/mainConstraintLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
@@ -81,7 +80,7 @@
         </ProgressBar>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ImageView
-        android:id="@+id/ivImage"
+        android:id="@+id/ivMainImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
