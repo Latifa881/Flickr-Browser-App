@@ -16,6 +16,7 @@ class LikedActivity : AppCompatActivity() {
     lateinit var ivLikedImage:ImageView
     val detailsArray = ArrayList<photoDetails>()
     val favoritesPhotosDB by lazy { PhotosDatabase.getInstance(this).favoritesPhotosDao() }
+    private val myAdapter by lazy{RecyclerViewAdapter(detailsArray, ivLikedImage, rvLiked, likedConstraintLayout,this)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_liked)
@@ -23,7 +24,7 @@ class LikedActivity : AppCompatActivity() {
         ivLikedImage=findViewById(R.id.ivLikedImage)
         likedConstraintLayout=findViewById(R.id.likedConstraintLayout)
         rvLiked = findViewById(R.id.rvLiked)
-        rvLiked.adapter = RecyclerViewAdapter(detailsArray, ivLikedImage, rvLiked, likedConstraintLayout,this)
+        rvLiked.adapter = myAdapter
         rvLiked.layoutManager = LinearLayoutManager(this)
         readFromDB()
 
@@ -45,7 +46,8 @@ class LikedActivity : AppCompatActivity() {
         for(photo in favPhotos)
         {
             detailsArray.add(photoDetails(photo.Url,photo.title))
-            rvLiked.adapter!!.notifyDataSetChanged()
+          //  rvLiked.adapter!!.notifyDataSetChanged()
+            myAdapter.updateRVData(detailsArray)
         }
     }
 }

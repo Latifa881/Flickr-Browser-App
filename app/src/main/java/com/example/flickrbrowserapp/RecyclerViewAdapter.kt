@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.flickrbrowserapp.Database.FavoritesPhotosDao
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_liked.view.*
 import kotlinx.android.synthetic.main.item_row.view.*
 import kotlinx.android.synthetic.main.item_row.view.ivImage
 
-class RecyclerViewAdapter  (val details:ArrayList<photoDetails>, val image:ImageView, val rvMain:RecyclerView, val constraintLayout:ConstraintLayout,val activity: Activity): RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder>(){
+class RecyclerViewAdapter  (var details:ArrayList<photoDetails>, val image:ImageView, val rvMain:RecyclerView, val constraintLayout:ConstraintLayout,val activity: Activity): RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder>(){
     class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     }
@@ -56,12 +57,12 @@ class RecyclerViewAdapter  (val details:ArrayList<photoDetails>, val image:Image
                     ivFavorite_border.visibility=View.GONE
                 }
             }
-
             ivFavorite.setOnClickListener {
                 if(photoTitle.isNotEmpty()&&photoUrl.isNotEmpty())
                 { favoritesPhotosDB.deleteFavPhoto(favoritesPhotos(photoId,photoTitle,photoUrl))
                     if (activity is LikedActivity)
                     { activity.readFromDB()
+                        val llNoSavedData=  activity.findViewById<LinearLayout>(R.id.llNoSavedData)
                         if(getItemCount()==0)
                             llNoSavedData.visibility=View.VISIBLE
                         else{ llNoSavedData.visibility=View.GONE}
@@ -75,7 +76,6 @@ class RecyclerViewAdapter  (val details:ArrayList<photoDetails>, val image:Image
                 ivFavorite_border.visibility=View.GONE
                 favoritesPhotosDB.insertFavPhoto(favoritesPhotos(0,data.title,data.imageLink))
             }
-
             Glide.with(context)
                 .load(data.imageLink)
                 .into(ivImage)
@@ -97,5 +97,10 @@ class RecyclerViewAdapter  (val details:ArrayList<photoDetails>, val image:Image
     }
 
     override fun getItemCount()=details.size
-
+    fun updateRVData(newDetailsList:ArrayList<photoDetails>){
+        val diffUtil=MyDiffUtil(details,newDetailsList)
+        val diffResult=DiffUtil.calculateDiff(diffUtil)
+        details=newDetailsList
+        diffResult.dispatchUpdatesTo(this)
+    }
 }

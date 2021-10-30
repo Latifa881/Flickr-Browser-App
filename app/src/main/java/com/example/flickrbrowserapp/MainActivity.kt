@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     val detailsArray = ArrayList<photoDetails>()
     val API_KEY = "fb68d28f6932960f3e6316e21de3495c"
     var tags = "cookies"
-
+    private val myAdapter by lazy {  RecyclerViewAdapter(detailsArray, ivMainImage, rvMain,mainConstraintLayout,this)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -46,7 +46,8 @@ class MainActivity : AppCompatActivity() {
         ivMainImage=findViewById(R.id.ivMainImage)
         mainConstraintLayout= findViewById(R.id.mainConstraintLayout)
         bottomNavigationView()
-        rvMain.adapter = RecyclerViewAdapter(detailsArray, ivMainImage, rvMain,mainConstraintLayout,this)
+
+        rvMain.adapter = myAdapter
         rvMain.layoutManager = LinearLayoutManager(this)
         requestApi_withRetrofit()
         btSearch.setOnClickListener {
@@ -102,6 +103,7 @@ class MainActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             )
                         }
+                        detailsArray.clear()
                         for (i in 0 until listOfPhotos.size)
                             detailsArray.add(
                                 photoDetails(
@@ -112,6 +114,7 @@ class MainActivity : AppCompatActivity() {
                         pbProgress.visibility = View.GONE
                         rvMain.visibility = View.VISIBLE
                         rvMain.adapter!!.notifyDataSetChanged()
+                     //  myAdapter.updateRVData(detailsArray)
 
 
                     }
